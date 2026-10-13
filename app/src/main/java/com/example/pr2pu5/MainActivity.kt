@@ -252,10 +252,10 @@ fun PacienteContent(
         ) {
             Row {
                 Text("curp", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("fecha_ingreso", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("fecha_salida", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("nombre", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("domicilio", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Fecha Ingreso", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Fecha Salida", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Nombre", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Domicilio", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
                 Text("Acción", modifier = Modifier.width(100.dp), fontWeight = FontWeight.Bold)
             }
             Divider()
