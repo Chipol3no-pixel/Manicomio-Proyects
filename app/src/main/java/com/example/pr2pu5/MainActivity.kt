@@ -183,7 +183,7 @@ fun MenuContent(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
-            Text(text = "Ir a Tabla Paciente")
+            Text(text = "Registro de Pacientes")
         }
 
         Button(
