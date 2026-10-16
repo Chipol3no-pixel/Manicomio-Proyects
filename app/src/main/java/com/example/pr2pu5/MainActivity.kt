@@ -48,6 +48,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pr2pu5.ui.theme.Pr2Pu5Theme
 
+val listaHabitacionGlobal = mutableStateListOf(
+    HabitacionItem(idHabitacion = "Hab-01", numeroHabitacion = "101", piso = "Piso 1", estado = "Libre"),
+    HabitacionItem(idHabitacion = "Hab-02", numeroHabitacion = "102", piso = "Piso 1", estado = "Ocupada")
+)
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +79,7 @@ fun AppContent(modifier: Modifier = Modifier) {
         composable("PacienteContent") { PacienteContent(navController) }
         composable("HistorialContent") { HistorialContent(navController) }
         composable("HabitacionContent") { HabitacionContent(navController) }
+        composable("HabitacionFormContent") { HabitacionFormContent(navController) }
     }
 }
 
@@ -384,12 +390,6 @@ fun HabitacionContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-    val listaHabitacion = remember {
-        mutableStateListOf(
-            HabitacionItem(idHabitacion = "Hab-01", numeroHabitacion = "101", piso = "Piso 1", estado = "Libre"),
-            HabitacionItem(idHabitacion = "Hab-02", numeroHabitacion = "102", piso = "Piso 1", estado = "Ocupada")
-        )
-    }
 
     Column(
         modifier = modifier
@@ -407,6 +407,15 @@ fun HabitacionContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Button(
+            onClick = { navController.navigate("HabitacionFormContent") },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Agregar Nueva Habitación")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -421,7 +430,7 @@ fun HabitacionContent(
             }
             Divider()
 
-            listaHabitacion.forEachIndexed { index, item ->
+            listaHabitacionGlobal.forEachIndexed { index, item ->
                 val bgColor = if (index % 2 == 0) Color(0xFFF5F5F5) else Color.White
                 Row(
                     modifier = Modifier
@@ -434,7 +443,7 @@ fun HabitacionContent(
                     Text(item.piso, modifier = Modifier.width(130.dp))
                     Text(item.estado, modifier = Modifier.width(130.dp))
                     Button(
-                        onClick = { listaHabitacion.removeAt(index) },
+                        onClick = { listaHabitacionGlobal.removeAt(index) },
                         modifier = Modifier.width(100.dp)
                     ) {
                         Text("Borrar")
@@ -451,6 +460,107 @@ fun HabitacionContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Regresar al Menú")
+        }
+    }
+}
+
+@Composable
+fun HabitacionFormContent(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    var idHabitacion by remember { mutableStateOf("") }
+    var numeroHabitacion by remember { mutableStateOf("") }
+    var piso by remember { mutableStateOf("") }
+    var estado by remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Formulario: Habitación",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 24.dp)
+        )
+
+        Text(text = "ID Habitación:")
+        TextField(
+            value = idHabitacion,
+            onValueChange = { idHabitacion = it },
+            placeholder = { Text("Ej. Hab-03") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Número de Habitación:")
+        TextField(
+            value = numeroHabitacion,
+            onValueChange = { numeroHabitacion = it },
+            placeholder = { Text("Ej. 103") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Piso:")
+        TextField(
+            value = piso,
+            onValueChange = { piso = it },
+            placeholder = { Text("Ej. Piso 2") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Estado:")
+        TextField(
+            value = estado,
+            onValueChange = { estado = it },
+            placeholder = { Text("Ej. Libre u Ocupada") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
+
+        Button(
+            onClick = {
+                if (idHabitacion.isNotBlank() && numeroHabitacion.isNotBlank()) {
+                    listaHabitacionGlobal.add(
+                        HabitacionItem(
+                            idHabitacion = idHabitacion,
+                            numeroHabitacion = numeroHabitacion,
+                            piso = piso,
+                            estado = estado
+                        )
+                    )
+                    Toast.makeText(context, "Habitación guardada con éxito", Toast.LENGTH_SHORT).show()
+                    navController.popBackStack()
+                } else {
+                    Toast.makeText(context, "Completa los campos obligatorios", Toast.LENGTH_SHORT).show()
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Guardar Habitación")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = { navController.popBackStack() },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Cancelar")
         }
     }
 }
