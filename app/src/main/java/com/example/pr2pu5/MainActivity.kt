@@ -341,11 +341,11 @@ fun HistorialContent(
                 .horizontalScroll(scrollState)
         ) {
             Row {
-                Text("id_historial", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("foto_paciente", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("alergias", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("cirugias", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("diagnosticos", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Historial Medico", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Foto del Paciente", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Alergias", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Cirugias", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Diagnosticos", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
                 Text("Acción", modifier = Modifier.width(100.dp), fontWeight = FontWeight.Bold)
             }
             Divider()
