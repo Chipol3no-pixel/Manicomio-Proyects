@@ -52,6 +52,10 @@ val listaHabitacionGlobal = mutableStateListOf(
     HabitacionItem(idHabitacion = "Hab-01", numeroHabitacion = "101", piso = "Piso 1", estado = "Libre"),
     HabitacionItem(idHabitacion = "Hab-02", numeroHabitacion = "102", piso = "Piso 1", estado = "Ocupada")
 )
+val listaPacienteGlobal = mutableStateListOf(
+    PacienteItem(curp = "ABCD123456", fechaIngreso = "01/10/2026", fechaSalida = "05/10/2026", nombre = "Juan Pérez", domicilio = "Calle 1"),
+    PacienteItem(curp = "EFGH789012", fechaIngreso = "02/10/2026", fechaSalida = "06/10/2026", nombre = "María López", domicilio = "Calle 2")
+)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +81,7 @@ fun AppContent(modifier: Modifier = Modifier) {
         composable("LoginContent") { LoginContent(navController) }
         composable("MenuContent") { MenuContent(navController) }
         composable("PacienteContent") { PacienteContent(navController) }
+        composable("PacienteFormContent") { PacienteFormContent(navController) }
         composable("HistorialContent") { HistorialContent(navController) }
         composable("HabitacionContent") { HabitacionContent(navController) }
         composable("HabitacionFormContent") { HabitacionFormContent(navController) }
@@ -230,12 +235,16 @@ fun PacienteContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-    val listaPacientes = remember {
-        mutableStateListOf(
-            PacienteItem(curp = "ABCD123456", fechaIngreso = "01/10/2026", fechaSalida = "05/10/2026", nombre = "Juan Pérez", domicilio = "Calle 1"),
-            PacienteItem(curp = "EFGH789012", fechaIngreso = "02/10/2026", fechaSalida = "06/10/2026", nombre = "María López", domicilio = "Calle 2")
+    
+    Box(
+        modifier = modifier.fillMaxSize()
+    ){
+        Image(
+            painter = painterResource(id = R.drawable.paciente_fondo),
+            contentDescription = "Fondo de tabla de pacientes",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
-    }
 
     Column(
         modifier = modifier
@@ -254,6 +263,15 @@ fun PacienteContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Button(
+            onClick = { navController.navigate("PacienteFormContent") },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Agregar Nuevo Paciente")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -269,7 +287,7 @@ fun PacienteContent(
             }
             Divider()
 
-            listaPacientes.forEachIndexed { index, item ->
+            listaPacientesGlobal.forEachIndexed { index, item ->
                 val bgColor = if (index % 2 == 0) Color(0xFFF5F5F5) else Color.White
                 Row(
                     modifier = Modifier
@@ -300,6 +318,119 @@ fun PacienteContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Regresar al Menú")
+        }
+    }
+}
+
+@Composable
+fun PacienteFormContent(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    var curp by remember { mutableStateOf("") }
+    var fechaIngreso by remember { mutableStateOf("") }
+    var fechaSalida by remember { mutableStateOf("") }
+    var nombre by remember { mutableStateOf("") }
+    var domicilio by remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Formulario: Paciente",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.ExtraBold,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 24.dp)
+        )
+
+        Text(text = "CURP:")
+        TextField(
+            value = curp,
+            onValueChange = { curp = it },
+            placeholder = { Text("Ej. ABCD123456") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Fecha de Ingreso:")
+        TextField(
+            value = fechaIngreso,
+            onValueChange = { fechaIngreso = it },
+            placeholder = { Text("Ej. 01/10/2026") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Fecha de Salida:")
+        TextField(
+            value = fechaSalida,
+            onValueChange = { fechaSalida = it },
+            placeholder = { Text("Ej. 05/10/2026") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Nombre:")
+        TextField(
+            value = nombre,
+            onValueChange = { nombre = it },
+            placeholder = { Text("Ej. Juan Pérez") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+
+        Text(text = "Domicilio:")
+        TextField(
+            value = domicilio,
+            onValueChange = { domicilio = it },
+            placeholder = { Text("Ej. Calle 1") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
+
+        Button(
+            onClick = {
+                if (curp.isNotBlank() && nombre.isNotBlank()) {
+                    listaPacienteGlobal.add(
+                        PacienteItem(
+                            curp = curp,
+                            fechaIngreso = fechaIngreso,
+                            fechaSalida = fechaSalida,
+                            nombre = nombre,
+                            domicilio = domicilio
+                        )
+                    )
+                    Toast.makeText(context, "Paciente guardado con éxito", Toast.LENGTH_SHORT).show()
+                    navController.popBackStack()
+                } else {
+                    Toast.makeText(context, "Completa los campos obligatorios", Toast.LENGTH_SHORT).show()
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Guardar Paciente")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = { navController.popBackStack() },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Cancelar")
         }
     }
 }
