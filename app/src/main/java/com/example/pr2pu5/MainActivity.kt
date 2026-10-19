@@ -189,7 +189,9 @@ fun MenuContent(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
-            Text(text = "Registro de Pacientes")
+            Text(text = "Registro de Pacientes",
+            color = Color.Black,
+            fontWeight = FontWeight.Bold )
         }
 
         Button(
@@ -243,9 +245,10 @@ fun PacienteContent(
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            text = "Tabla: Paciente",
+            text = "Registro de Pacientes",
             fontSize = 20.sp,
             fontWeight = FontWeight.ExtraBold,
+            color = Color.Black,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -257,9 +260,9 @@ fun PacienteContent(
                 .horizontalScroll(scrollState)
         ) {
             Row {
-                Text("curp", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("Fecha Ingreso", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
-                Text("Fecha Salida", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("CURP", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Fecha de Ingreso", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
+                Text("Fecha de Salida", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
                 Text("Nombre", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
                 Text("Domicilio", modifier = Modifier.width(130.dp), fontWeight = FontWeight.Bold)
                 Text("Acción", modifier = Modifier.width(100.dp), fontWeight = FontWeight.Bold)
@@ -274,11 +277,11 @@ fun PacienteContent(
                         .padding(vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(item.curp, modifier = Modifier.width(130.dp))
-                    Text(item.fechaIngreso, modifier = Modifier.width(130.dp))
-                    Text(item.fechaSalida, modifier = Modifier.width(130.dp))
-                    Text(item.nombre, modifier = Modifier.width(130.dp))
-                    Text(item.domicilio, modifier = Modifier.width(130.dp))
+                    Text(item.curp, modifier = Modifier.width(130.dp), color = Color.DarkGray)
+                    Text(item.fechaIngreso, modifier = Modifier.width(130.dp), color = Color.DarkGray)
+                    Text(item.fechaSalida, modifier = Modifier.width(130.dp), color = Color.DarkGray)
+                    Text(item.nombre, modifier = Modifier.width(130.dp), color = Color.DarkGray)
+                    Text(item.domicilio, modifier = Modifier.width(130.dp), color = Color.DarkGray)
                     Button(
                         onClick = { listaPacientes.removeAt(index) },
                         modifier = Modifier.width(100.dp)
