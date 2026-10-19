@@ -205,7 +205,7 @@ fun MenuContent(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
-            Text(text = "Ir a Tabla Historial Médico")
+            Text(text = "Historial Médico")
         }
 
         Button(
@@ -214,7 +214,7 @@ fun MenuContent(
                 .fillMaxWidth()
                 .padding(bottom = 32.dp)
         ) {
-            Text(text = "Ir a Tabla Habitación")
+            Text(text = "Tabla Habitación")
         }
 
         Button(
